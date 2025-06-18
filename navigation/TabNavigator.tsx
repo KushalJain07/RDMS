@@ -18,29 +18,34 @@ const iconMapping: Record<string, string> = {
   Invoices: 'receipt-long',
 };
 
+const TabBarIcon: React.FC<{ name: string; color: string }> = ({ name, color }) => (
+  <MaterialIcons
+    name={iconMapping[name] || 'error'}
+    size={28}
+    color={color}
+    style={{ marginBottom: -2 }}
+  />
+);
+
 const TabNavigator: React.FC = () => {
   return (
     <Tab.Navigator
       initialRouteName="Trucks"
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarIcon: ({ color }) => (
-          <MaterialIcons
-            name={iconMapping[route.name] || 'error'}
-            size={24} // Match native icon scale
-            color={color}
-            style={{ marginBottom: -2 }} // Slight adjustment for perfect vertical alignment
-          />
-        ),
+        tabBarIcon: ({ color }) => <TabBarIcon name={route.name} color={color} />,
         tabBarActiveTintColor: Theme.Colors.activeNavBackground,
         tabBarInactiveTintColor: Theme.Colors.navIconColor,
         tabBarStyle: {
-          height: Platform.OS === 'ios' ? 85 : 65,
-          paddingTop: 8,
-          paddingBottom: Platform.OS === 'ios' ? 20 : 10,
+          height: Platform.OS === 'ios' ? 75 : 60,
+          paddingBottom: Platform.OS === 'ios' ? 15 : 8,
           backgroundColor: Theme.Colors.inactiveNavBackground,
           borderTopWidth: 1,
           borderTopColor: Theme.Colors.lightGray,
+          elevation: 4,
+          shadowOpacity: 0.1,
+          shadowRadius: 3,
+          shadowOffset: { width: 0, height: 2 },
         },
         tabBarLabelStyle: {
           fontSize: 12,
@@ -48,42 +53,17 @@ const TabNavigator: React.FC = () => {
           paddingBottom: 2,
         },
         tabBarItemStyle: {
-          justifyContent: 'center',
+          flex: 1,
           alignItems: 'center',
+          justifyContent: 'center',
         },
       })}
     >
-      <Tab.Screen
-        name="Trucks"
-        component={TrucksScreen}
-        options={{ tabBarLabel: 'Trucks' }}
-      />
-      <Tab.Screen
-        name="Add_Truck"
-        component={Add_Truck}
-        options={{
-          tabBarButton: () => null,
-          tabBarStyle: { display: 'none' },
-        }}
-      />
-      <Tab.Screen
-        name="Customers"
-        component={CustomersScreen}
-        options={{ tabBarLabel: 'Customers' }}
-      />
-      <Tab.Screen
-        name="Invoices"
-        component={InvoiceScreen}
-        options={{ tabBarLabel: 'Invoices' }}
-      />
-      <Tab.Screen
-        name="AddCustomer"
-        component={AddCustomer}
-        options={{
-          tabBarButton: () => null,
-          tabBarStyle: { display: 'none' },
-        }}
-      />
+      <Tab.Screen name="Trucks" component={TrucksScreen} options={{ tabBarLabel: 'Trucks' }} />
+      <Tab.Screen name="AddTruck" component={Add_Truck} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="Customers" component={CustomersScreen} options={{ tabBarLabel: 'Customers' }} />
+      <Tab.Screen name="Invoices" component={InvoiceScreen} options={{ tabBarLabel: 'Invoices' }} />
+      <Tab.Screen name="AddCustomer" component={AddCustomer} options={{ tabBarButton: () => null }} />
     </Tab.Navigator>
   );
 };
