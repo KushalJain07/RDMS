@@ -8,28 +8,25 @@ import {
   Image,
   ScrollView,
   Modal,
+  Animated,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-// import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-// import { RootStackParamList } from '../../types/navigation';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 
 type UserRole = 'Driver' | 'Supplier';
 
-// type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
-
-const LoginScreen: React.FC = () => {
-  const navigation = useNavigation();
-
+export default function LoginScreen() {
+  const navigation = useNavigation<NavigationProp<any>>();
   const [selectedRole, setSelectedRole] = useState<UserRole>('Driver');
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [contentOpacity] = useState(new Animated.Value(1));
 
   const handleLogin = () => {
     if (selectedRole === 'Driver') {
-        navigation.navigate('DeliveryNote' as never);
+      navigation.navigate('Driver_Dashboard');
     } else if (selectedRole === 'Supplier') {
-      navigation.navigate('TabNavigator' as never);
+      navigation.navigate('TabNavigator');
     }
   };
 
@@ -37,9 +34,27 @@ const LoginScreen: React.FC = () => {
     setIsModalVisible(true);
   };
 
+  const switchRole = (role: UserRole) => {
+    Animated.sequence([
+      Animated.timing(contentOpacity, {
+        toValue: 0,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+      Animated.timing(contentOpacity, {
+        toValue: 1,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      setSelectedRole(role);
+    });
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
+        {/* Logo */}
         <View style={styles.logoContainer}>
           <Image
             source={require('../../public/images/logo.png')}
@@ -47,8 +62,10 @@ const LoginScreen: React.FC = () => {
           />
         </View>
 
+        {/* Heading */}
         <Text style={styles.signInHeading}>Sign in</Text>
 
+        {/* Role Toggle */}
         <View style={styles.toggleContainer}>
           {['Driver', 'Supplier'].map((role) => (
             <TouchableOpacity
@@ -57,7 +74,7 @@ const LoginScreen: React.FC = () => {
                 styles.toggleButton,
                 selectedRole === role && styles.toggleButtonSelected,
               ]}
-              onPress={() => setSelectedRole(role as UserRole)}
+              onPress={() => switchRole(role as UserRole)}
             >
               <Text
                 style={[
@@ -71,31 +88,39 @@ const LoginScreen: React.FC = () => {
           ))}
         </View>
 
-        <TextInput
-          placeholder="Username"
-          style={styles.input}
-          value={username}
-          onChangeText={setUsername}
-        />
-        <TextInput
-          placeholder="Password"
-          secureTextEntry
-          style={styles.input}
-          value={password}
-          onChangeText={setPassword}
-        />
+        {/* Animated Login Form */}
+        <Animated.View style={{ opacity: contentOpacity }}>
+          <TextInput
+            placeholder="Username"
+            style={styles.input}
+            value={username}
+            onChangeText={setUsername}
+          />
+          <TextInput
+            placeholder="Password"
+            secureTextEntry
+            style={styles.input}
+            value={password}
+            onChangeText={setPassword}
+          />
 
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>Log in</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <Text style={styles.loginButtonText}>Log in</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleForgotPassword}>
-          <Text style={styles.link}>Forgot password?</Text>
-        </TouchableOpacity>
+          {selectedRole === 'Supplier' && (
+            <>
+              <TouchableOpacity onPress={handleForgotPassword}>
+                <Text style={styles.link}>Forgot password?</Text>
+              </TouchableOpacity>
 
-        <Text style={styles.link}>Sign up</Text>
+              <Text style={styles.link}>Sign up</Text>
+            </>
+          )}
+        </Animated.View>
       </View>
 
+      {/* Forgot Password Modal */}
       <Modal
         visible={isModalVisible}
         transparent
@@ -119,14 +144,14 @@ const LoginScreen: React.FC = () => {
       </Modal>
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'center',
     backgroundColor: '#F3F4F6',
-    paddingVertical: 20, // Added vertical padding for extra spacing
+    paddingVertical: 20,
   },
   container: {
     padding: 30,
@@ -140,7 +165,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 30, // increased spacing
+    marginBottom: 30,
   },
   logo: {
     width: 100,
@@ -160,7 +185,7 @@ const styles = StyleSheet.create({
   toggleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginBottom: 30, // increased spacing
+    marginBottom: 30,
     backgroundColor: '#E5E7EB',
     borderRadius: 8,
     padding: 4,
@@ -246,5 +271,3 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-
-export default LoginScreen;

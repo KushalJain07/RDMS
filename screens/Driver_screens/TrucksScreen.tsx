@@ -11,17 +11,39 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Theme } from '../../constants/theme';
-// import { useNavigation } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { TabParamList } from '../../types/navigation';
-import { trucks } from '../../src/mockData';
-import { Truck } from '../../src/types';
 
-const { Colors, FontSizes, Spacing, BorderRadius } = Theme;
+const { Colors, FontSizes, FontWeights, Spacing, BorderRadius } = Theme;
+
+type Truck = {
+  id: string;
+  number: string;
+  driverName: string;
+  status: 'Active' | 'In Transit' | 'Inactive';
+};
+
 type Props = BottomTabScreenProps<TabParamList, 'Trucks'>;
 
 const TrucksScreen: React.FC<Props> = ({ navigation }) => {
-  const [truckList, _setTruckList] = useState<Truck[]>(trucks);
+  const [trucks, setTrucks] = useState<Truck[]>([
+    { id: '1', number: 'MH 29 CB-2233', driverName: 'Rahul Patil', status: 'Active' },
+    { id: '2', number: 'MH 31 DF-7831', driverName: 'Amit Sharma', status: 'In Transit' },
+    { id: '3', number: 'MH 12 AB-9876', driverName: 'Sunil Deshmukh', status: 'Active' },
+  ]);
+
+  const getStatusStyles = (status: Truck['status']) => {
+    switch (status) {
+      case 'Active':
+        return { backgroundColor: '#DFF2E1', color: '#2E7D32' };
+      case 'In Transit':
+        return { backgroundColor: '#FFF8E1', color: '#F9A825' };
+      case 'Inactive':
+        return { backgroundColor: '#FFEBEE', color: '#C62828' };
+      default:
+        return { backgroundColor: '#ECEFF1', color: '#607D8B' };
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,34 +51,40 @@ const TrucksScreen: React.FC<Props> = ({ navigation }) => {
 
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('LoginScreen' as never)}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" size={24} color={Colors.white} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Trucks</Text>
         <View style={{ width: 24 }} />
       </View>
 
-      {/* Truck List */}
-      <ScrollView contentContainerStyle={styles.listContainer}>
-        {truckList.map((truck) => (
-          <View key={truck.id} style={styles.truckCard}>
-            <View style={styles.truckHeader}>
-              <MaterialIcons name="local-shipping" size={22} color={Colors.primary} />
-              <Text style={styles.truckNumber}>{truck.number}</Text>
+      {/* Truck List with Add Button at End */}
+      <ScrollView contentContainerStyle={styles.listContainer} showsVerticalScrollIndicator={false}>
+        {trucks.map((truck) => {
+          const { backgroundColor, color } = getStatusStyles(truck.status);
+          return (
+            <View key={truck.id} style={styles.truckCard}>
+              <View style={styles.truckHeader}>
+                <MaterialIcons name="local-shipping" size={22} color={Colors.primary} />
+                <Text style={styles.truckNumber}>{truck.number}</Text>
+              </View>
+              <Text style={styles.driverName}>Driver: {truck.driverName}</Text>
+              <View style={[styles.statusBadge, { backgroundColor }]}>
+                <Text style={[styles.statusText, { color }]}>{truck.status}</Text>
+              </View>
             </View>
-            <Text style={styles.driverName}>Driver: {truck.driverName}</Text>
-            <View style={styles.statusBadge}>
-              <Text style={styles.statusText}>{truck.status}</Text>
-            </View>
-          </View>
-        ))}
-      </ScrollView>
+          );
+        })}
 
-      {/* Floating Add Truck Button */}
-      <TouchableOpacity style={styles.floatingAddButton} onPress={() => navigation.navigate('Add_Truck' as never)}>
-        <Icon name="add" size={20} color={Colors.white} />
-        <Text style={styles.floatingAddButtonText}>Add Truck</Text>
-      </TouchableOpacity>
+        {/* Add Truck Button BELOW the last card */}
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => navigation.navigate('Add_Truck')}
+        >
+          <Icon name="add-circle" size={22} color={Colors.white} />
+          <Text style={styles.addButtonText}>Add New Truck</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -79,12 +107,12 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: FontSizes.large,
-    fontWeight: 'bold',
+    fontWeight: FontWeights.bold,
     color: Colors.white,
   },
   listContainer: {
     paddingHorizontal: Spacing.lg,
-    paddingBottom: 150,
+    paddingBottom: Spacing.xxl,
     paddingTop: Spacing.md,
   },
   truckCard: {
@@ -93,9 +121,10 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.md,
     marginBottom: Spacing.md,
     shadowColor: '#000',
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
     shadowRadius: 5,
-    elevation: 2,
+    elevation: 3,
     borderLeftWidth: 5,
     borderLeftColor: Colors.primary,
   },
@@ -106,7 +135,7 @@ const styles = StyleSheet.create({
   },
   truckNumber: {
     fontSize: FontSizes.medium,
-    fontWeight: 'bold',
+    fontWeight: FontWeights.bold,
     color: '#1A1A1A',
     fontFamily: 'monospace',
     marginLeft: Spacing.sm,
@@ -118,36 +147,35 @@ const styles = StyleSheet.create({
   },
   statusBadge: {
     alignSelf: 'flex-start',
-    backgroundColor: '#DFF2E1',
     paddingHorizontal: Spacing.sm,
-    paddingVertical: Spacing.xs,
+    paddingVertical: 4,
     borderRadius: 999,
+    marginTop: 4,
   },
   statusText: {
-    fontSize: FontSizes.small - 2,
-    color: '#2E7D32',
-    fontWeight: 'bold',
+    fontSize: FontSizes.small - 1,
+    fontWeight: FontWeights.bold,
   },
-  floatingAddButton: {
-    position: 'absolute',
-    right: Spacing.lg,
-    bottom: 100,
-    backgroundColor: Colors.primary,
+  addButton: {
+    marginTop: Spacing.lg,
     flexDirection: 'row',
+    backgroundColor: Colors.primary,
+    padding: Spacing.md,
+    borderRadius: BorderRadius.md,
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.sm,
-    borderRadius: BorderRadius.lg,
+    alignSelf: 'center',
     shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 5,
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+    elevation: 4,
   },
-  floatingAddButtonText: {
+  addButtonText: {
     color: Colors.white,
     fontSize: FontSizes.medium,
-    fontWeight: 'bold',
-    marginLeft: Spacing.xs,
+    fontWeight: FontWeights.bold,
+    marginLeft: Spacing.sm,
   },
 });
 
