@@ -51,9 +51,22 @@ const TrucksScreen: React.FC<Props> = ({ navigation }) => {
       <StatusBar barStyle="light-content" backgroundColor={Colors.primary} />
 
       {/* Header */}
+      
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Trucks</Text>
-      </View>
+                <TouchableOpacity
+                  style={styles.backButton}
+                  onPress={() => navigation.navigate('LoginScreen')}
+                >
+                  <Icon name="arrow-back" size={24} color="#fff" />
+                </TouchableOpacity>
+                <View style={styles.headerTitleContainer}>
+                  <Text style={styles.headerTitle}>
+                    Trucks   
+                  </Text>
+                
+                </View>
+              </View>
+      
 
       {/* Truck List with Add Button at End */}
       <ScrollView contentContainerStyle={styles.listContainer} showsVerticalScrollIndicator={false}>
@@ -91,7 +104,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
+
+   backButton: {
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+  },
+
   header: {
+    
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -102,11 +123,20 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.primaryDark,
   },
+
+ headerTitleContainer: {
+    marginLeft: 15,
+  },
+
   headerTitle: {
   fontSize: FontSizes.large,
   fontWeight: 'bold',
+  alignContent: 'center',
+  alignItems: 'center',
+  justifyContent: 'center',
   color: Colors.white,
-  marginLeft: 155,      
+  marginLeft: 24,
+  marginRight: 160,    
   marginTop: 4,        
 },
   listContainer: {

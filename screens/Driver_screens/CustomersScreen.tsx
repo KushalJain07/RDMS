@@ -73,6 +73,10 @@ const CustomersScreen: React.FC<Props> = ({ navigation }) => {
     setExpandedCustomerId(prev => (prev === customerId ? null : customerId));
   };
 
+  const handleAddCustomer = () => {
+    navigation.navigate('AddCustomer');
+  };
+
 
 
   return (
@@ -117,6 +121,14 @@ const CustomersScreen: React.FC<Props> = ({ navigation }) => {
           </View>
         ))}
 
+      {/* Add Truck Button BELOW the last card */}
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={() => navigation.navigate('AddCustomer')}
+              >
+                <Icon name="add-circle" size={22} color={Colors.white} />
+                <Text style={styles.addButtonText}>Add New Customer</Text>
+              </TouchableOpacity>
 
       </ScrollView>
     </SafeAreaView>
