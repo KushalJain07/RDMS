@@ -13,6 +13,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Theme } from '../../constants/theme';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { TabParamList } from '../../types/navigation';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/StackNavigator';
+
 
 const { Colors, FontSizes, FontWeights, Spacing, BorderRadius } = Theme;
 
@@ -30,6 +34,8 @@ type Customer = {
 };
 
 type Props = BottomTabScreenProps<TabParamList, 'Customers'>;
+
+type CustomerScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 const CustomersScreen: React.FC<Props> = ({ navigation }) => {
   const [expandedCustomerId, setExpandedCustomerId] = useState<string | null>(null);
@@ -65,6 +71,10 @@ const CustomersScreen: React.FC<Props> = ({ navigation }) => {
 
   const toggleSites = (customerId: string) => {
     setExpandedCustomerId(prev => (prev === customerId ? null : customerId));
+  };
+
+  const handleAddCustomer = () => {
+    navigation.navigate('AddCustomer');
   };
 
   return (
@@ -114,7 +124,7 @@ const CustomersScreen: React.FC<Props> = ({ navigation }) => {
         {/* Add Button inside ScrollView */}
         <TouchableOpacity
           style={styles.addButton}
-          onPress={() => navigation.navigate('AddCustomer')}
+          onPress={handleAddCustomer}
         >
           <Icon name="add-circle" size={22} color={Colors.white} />
           <Text style={styles.addButtonText}>Add Customer</Text>

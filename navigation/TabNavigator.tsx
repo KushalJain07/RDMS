@@ -3,15 +3,22 @@ import { View, Text, TouchableOpacity, StyleSheet, Platform, Dimensions } from '
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TrucksScreen from '../screens/Driver_screens/TrucksScreen';
 import CustomersScreen from '../screens/Driver_screens/CustomersScreen';
+import InvoiceScreen from '../screens/Driver_screens/InvoiceScreen';
 import { TabParamList } from '../types/navigation';
 import { Theme } from '../constants/theme';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import TabNavigator from './TabNavigator';
 import AddTruck from '../screens/Driver_screens/AddTruck';
-import AddCustomer from '../screens/Driver_screens/AddCustomer';
 
 const Tab = createBottomTabNavigator<TabParamList>();
-const Stack = createStackNavigator();
+export type RootStackParamList = {
+  MainTab: undefined;
+  AddTruck: undefined;
+};
+
+// Remove the duplicate Stack declaration
+const Stack = createStackNavigator<RootStackParamList>();
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const TAB_WIDTH = SCREEN_WIDTH / 3; // 👈 force exactly 3 tabs
@@ -52,7 +59,7 @@ const CustomTabBar = ({ state, descriptors, navigation }: any) => {
   );
 };
 
-const TabNavigator: React.FC = () => {
+const TabNavigatorComponent: React.FC = () => {
   return (
     <Tab.Navigator
       initialRouteName="Trucks"
@@ -63,6 +70,7 @@ const TabNavigator: React.FC = () => {
     >
       <Tab.Screen name="Trucks" component={TrucksScreen} />
       <Tab.Screen name="Customers" component={CustomersScreen} />
+      <Tab.Screen name="Invoice" component={InvoiceScreen} />
     </Tab.Navigator>
   );
 };
@@ -70,13 +78,16 @@ const TabNavigator: React.FC = () => {
 const StackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="Main"
-        component={TabNavigator}
+      <Stack.Screen 
+        name="MainTab" 
+        component={TabNavigatorComponent} 
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="AddTruck" component={AddTruck} />
-      <Stack.Screen name="AddCustomer" component={AddCustomer} />
+      <Stack.Screen 
+        name="AddTruck" 
+        component={AddTruck}
+        options={{ title: 'Add Truck' }}
+      />
     </Stack.Navigator>
   );
 };
@@ -108,20 +119,6 @@ const styles = StyleSheet.create({
   },
 });
 
+
+
 export default StackNavigator;
-
-import { useNavigation } from '@react-navigation/native';
-
-const TrucksScreen = () => {
-  const navigation = useNavigation();
-
-  const handleAddTruck = () => {
-    navigation.navigate('AddTruck');
-  };
-
-  return (
-    // ...existing code...
-  );
-};
-
-export default TrucksScreen;
