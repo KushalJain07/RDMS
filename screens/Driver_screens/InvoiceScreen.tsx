@@ -31,9 +31,6 @@ const InvoiceScreen: React.FC<Props> = ({navigation}) => {
 
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back" size={24} color={Colors.white} />
-        </TouchableOpacity>
         <Text style={styles.headerTitle}>Invoices</Text>
         <View style={{width: 24}} />
       </View>
@@ -87,11 +84,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.primaryDark,
   },
-  headerTitle: {
-    fontSize: FontSizes.large,
-    fontWeight: 'bold',
-    color: Colors.white,
-  },
+ headerTitle: {
+  fontSize: FontSizes.large,
+  color: Colors.white,
+  fontWeight: 'bold',
+  marginLeft: 144,
+  marginTop: 4,
+ },
   listContainer: {
     paddingHorizontal: Spacing.lg,
     paddingBottom: 150,

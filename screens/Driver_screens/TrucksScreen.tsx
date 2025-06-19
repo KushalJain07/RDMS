@@ -9,6 +9,7 @@ import {
   StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Theme } from '../../constants/theme';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -51,11 +52,7 @@ const TrucksScreen: React.FC<Props> = ({ navigation }) => {
 
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back" size={24} color={Colors.white} />
-        </TouchableOpacity>
         <Text style={styles.headerTitle}>Trucks</Text>
-        <View style={{ width: 24 }} />
       </View>
 
       {/* Truck List with Add Button at End */}
@@ -106,10 +103,12 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.primaryDark,
   },
   headerTitle: {
-    fontSize: FontSizes.large,
-    fontWeight: FontWeights.bold,
-    color: Colors.white,
-  },
+  fontSize: FontSizes.large,
+  fontWeight: 'bold',
+  color: Colors.white,
+  marginLeft: 155,      
+  marginTop: 4,        
+},
   listContainer: {
     paddingHorizontal: Spacing.lg,
     paddingBottom: Spacing.xxl,
@@ -128,6 +127,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 5,
     borderLeftColor: Colors.primary,
   },
+   
   truckHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   truckNumber: {
     fontSize: FontSizes.medium,
-    fontWeight: FontWeights.bold,
+    fontWeight: 'bold',
     color: '#1A1A1A',
     fontFamily: 'monospace',
     marginLeft: Spacing.sm,
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: FontSizes.small - 1,
-    fontWeight: FontWeights.bold,
+    fontWeight: 'bold',
   },
   addButton: {
     marginTop: Spacing.lg,
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: Colors.white,
     fontSize: FontSizes.medium,
-    fontWeight: FontWeights.bold,
+    fontWeight: 'bold',
     marginLeft: Spacing.sm,
   },
 });

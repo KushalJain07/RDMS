@@ -73,9 +73,7 @@ const CustomersScreen: React.FC<Props> = ({ navigation }) => {
     setExpandedCustomerId(prev => (prev === customerId ? null : customerId));
   };
 
-  const handleAddCustomer = () => {
-    navigation.navigate('AddCustomer');
-  };
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -83,9 +81,7 @@ const CustomersScreen: React.FC<Props> = ({ navigation }) => {
 
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back" size={24} color={Colors.white} />
-        </TouchableOpacity>
+
         <Text style={styles.headerTitle}>Customers</Text>
         <View style={{ width: 24 }} />
       </View>
@@ -121,14 +117,7 @@ const CustomersScreen: React.FC<Props> = ({ navigation }) => {
           </View>
         ))}
 
-        {/* Add Button inside ScrollView */}
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={handleAddCustomer}
-        >
-          <Icon name="add-circle" size={22} color={Colors.white} />
-          <Text style={styles.addButtonText}>Add Customer</Text>
-        </TouchableOpacity>
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -150,11 +139,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.primaryDark,
   },
-  headerTitle: {
-    fontSize: FontSizes.large,
-    fontWeight: FontWeights.bold,
-    color: Colors.white,
-  },
+ headerTitle: {
+  fontSize: FontSizes.large,
+  fontWeight: 'bold',
+  color: Colors.white,
+  marginLeft: 130,      
+  marginTop: 4,        
+},
   listContainer: {
     paddingHorizontal: Spacing.lg,
     paddingBottom: Spacing.xxl,
@@ -180,7 +171,7 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: FontSizes.medium,
-    fontWeight: FontWeights.bold,
+    fontWeight: 'bold',
     color: Colors.black,
     fontFamily: 'monospace',
     marginLeft: Spacing.sm,

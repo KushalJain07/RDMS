@@ -12,10 +12,12 @@ import {
 } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 
+import { RootStackParamList } from '../../App';
+
 type UserRole = 'Driver' | 'Supplier';
 
 export default function LoginScreen() {
-  const navigation = useNavigation<NavigationProp<any>>();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [selectedRole, setSelectedRole] = useState<UserRole>('Driver');
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -24,7 +26,7 @@ export default function LoginScreen() {
 
   const handleLogin = () => {
     if (selectedRole === 'Driver') {
-      navigation.navigate('Driver_Dashboard');
+      navigation.navigate('DeliveryNote');
     } else if (selectedRole === 'Supplier') {
       navigation.navigate('TabNavigator');
     }
