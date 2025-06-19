@@ -79,7 +79,7 @@ const TrucksScreen: React.FC<Props> = ({ navigation }) => {
         {/* Add Truck Button BELOW the last card */}
         <TouchableOpacity
           style={styles.addButton}
-          onPress={() => navigation.navigate('Add_Truck')}
+          onPress={() => navigation.navigate('AddTruck')}
         >
           <Icon name="add-circle" size={22} color={Colors.white} />
           <Text style={styles.addButtonText}>Add New Truck</Text>

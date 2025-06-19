@@ -13,33 +13,28 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { Theme } from '../../constants/theme';
 
-
-type CustomerDetails = {
-  customerName: string;
-  gstId: string;
-  companyName: string;
-  numberOfSites: string;
-  siteAddress: string;
+type TruckDetails = {
+  numberPlate: string;
+  truckNumber: string;
+  driverName: string;
   contactNumber: string;
-  email: string;
-  remarks: string;
+  vehicleModel: string;
+  receiptRange: string;
 };
 
-const CustomerDetailsScreen: React.FC = () => {
+const AddTruckScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<any>>();
-  const [details, setDetails] = useState<CustomerDetails>({
-    customerName: '',
-    gstId: '',
-    companyName: '',
-    numberOfSites: '',
-    siteAddress: '',
+  const [truck, setTruck] = useState<TruckDetails>({
+    numberPlate: '',
+    truckNumber: '',
+    driverName: '',
     contactNumber: '',
-    email: '',
-    remarks: '',
+    vehicleModel: '',
+    receiptRange: '',
   });
 
   const handleSubmit = () => {
-    Alert.alert('Note', 'Customer data saved (mock). API integration pending.');
+    Alert.alert('Saved', 'Truck details saved (mock). API pending.');
   };
 
   return (
@@ -48,43 +43,45 @@ const CustomerDetailsScreen: React.FC = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" size={24} color={Theme.Colors.white} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Customer Details</Text>
+        <Text style={styles.headerTitle}>Add Truck</Text>
         <View style={styles.headerSpacer} />
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.form}>
-          <Text style={styles.sectionTitle}>Customer Information</Text>
+          <Text style={styles.sectionTitle}>Truck Information</Text>
 
           <Text style={styles.label}>
-            Customer Name <Text style={styles.asterisk}>*</Text>
+            Truck Number Plate <Text style={styles.asterisk}>*</Text>
           </Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter customer name"
+            placeholder="MH12AB1234"
             placeholderTextColor={Theme.Colors.gray}
-            value={details.customerName}
-            onChangeText={(text) => setDetails({ ...details, customerName: text })}
-          />
-
-          <Text style={styles.label}>Company Name</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter company name"
-            placeholderTextColor={Theme.Colors.gray}
-            value={details.companyName}
-            onChangeText={(text) => setDetails({ ...details, companyName: text })}
+            value={truck.numberPlate}
+            onChangeText={(text) => setTruck({ ...truck, numberPlate: text })}
           />
 
           <Text style={styles.label}>
-            GST ID <Text style={styles.asterisk}>*</Text>
+            Truck Number <Text style={styles.asterisk}>*</Text>
           </Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter GST ID"
+            placeholder="Enter internal truck ID"
             placeholderTextColor={Theme.Colors.gray}
-            value={details.gstId}
-            onChangeText={(text) => setDetails({ ...details, gstId: text })}
+            value={truck.truckNumber}
+            onChangeText={(text) => setTruck({ ...truck, truckNumber: text })}
+          />
+
+          <Text style={styles.label}>
+            Driver Name <Text style={styles.asterisk}>*</Text>
+          </Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter driver's full name"
+            placeholderTextColor={Theme.Colors.gray}
+            value={truck.driverName}
+            onChangeText={(text) => setTruck({ ...truck, driverName: text })}
           />
 
           <Text style={styles.label}>
@@ -92,61 +89,33 @@ const CustomerDetailsScreen: React.FC = () => {
           </Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter contact number"
+            placeholder="Enter driver's contact number"
             placeholderTextColor={Theme.Colors.gray}
             keyboardType="phone-pad"
-            value={details.contactNumber}
-            onChangeText={(text) => setDetails({ ...details, contactNumber: text })}
+            value={truck.contactNumber}
+            onChangeText={(text) => setTruck({ ...truck, contactNumber: text })}
           />
 
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label}>Vehicle Model</Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter email"
+            placeholder="e.g., Tata Ace, Eicher 407"
             placeholderTextColor={Theme.Colors.gray}
-            keyboardType="email-address"
-            value={details.email}
-            onChangeText={(text) => setDetails({ ...details, email: text })}
+            value={truck.vehicleModel}
+            onChangeText={(text) => setTruck({ ...truck, vehicleModel: text })}
           />
 
-          <Text style={styles.sectionTitle}>Site Information</Text>
-
-          <Text style={styles.label}>
-            Number of Sites <Text style={styles.asterisk}>*</Text>
-          </Text>
+          <Text style={styles.label}>Receipt Range</Text>
           <TextInput
             style={styles.input}
-            placeholder="e.g. 3"
+            placeholder="e.g. 100 - 200"
             placeholderTextColor={Theme.Colors.gray}
-            keyboardType="numeric"
-            value={details.numberOfSites}
-            onChangeText={(text) => setDetails({ ...details, numberOfSites: text })}
-          />
-
-          <Text style={styles.label}>
-            Site Address <Text style={styles.asterisk}>*</Text>
-          </Text>
-          <TextInput
-            style={[styles.input, styles.textArea]}
-            placeholder="Enter address(es)"
-            placeholderTextColor={Theme.Colors.gray}
-            multiline
-            value={details.siteAddress}
-            onChangeText={(text) => setDetails({ ...details, siteAddress: text })}
-          />
-
-          <Text style={styles.label}>Remarks</Text>
-          <TextInput
-            style={[styles.input, styles.textArea]}
-            placeholder="Any additional remarks"
-            placeholderTextColor={Theme.Colors.gray}
-            multiline
-            value={details.remarks}
-            onChangeText={(text) => setDetails({ ...details, remarks: text })}
+            value={truck.receiptRange}
+            onChangeText={(text) => setTruck({ ...truck, receiptRange: text })}
           />
 
           <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitButtonText}>Save Customer</Text>
+            <Text style={styles.submitButtonText}>Save Truck</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -212,10 +181,6 @@ const styles = StyleSheet.create({
     color: Theme.Colors.black,
     fontFamily: Theme.Fonts.regular,
   },
-  textArea: {
-    height: 100,
-    textAlignVertical: 'top',
-  },
   submitButton: {
     backgroundColor: Theme.Colors.primaryDark,
     padding: Theme.Spacing.lg,
@@ -231,4 +196,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomerDetailsScreen;
+export default AddTruckScreen;
